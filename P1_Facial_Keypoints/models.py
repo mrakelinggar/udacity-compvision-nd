@@ -20,7 +20,7 @@ class Net(nn.Module):
 
         # As an example, you've been given a convolutional layer, which you may (but don't have to) change:
         # 1 input image channel (grayscale), 32 output channels/feature maps, 5x5 square convolution kernel
-        self.conv1 = nn.Conv2d(1, 32, 5)  # 32x110x110
+        self.conv1 = nn.Conv2d(1, 32, 3)  # 32x111x111
         self.conv2 = nn.Conv2d(32, 128, 3)  # 128x54x54
         self.conv3 = nn.Conv2d(128, 256, 3)  # 256x26x26
         self.conv4 = nn.Conv2d(256, 512, 3)  # 512x12x12
