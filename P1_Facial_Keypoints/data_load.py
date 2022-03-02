@@ -79,11 +79,12 @@ class RandomHorizontalFlip(object):
         
         image_copy = np.copy(image)
         key_pts_copy = np.copy(key_pts)
+        key_pts_copy_2 = np.copy(key_pts)
 
         w = image_copy.shape[1]
         if (np.random.normal(0,1,1) <= 0.5):
             image_copy = np.flip(image, 1)
-            key_pts_copy[:,0] = w - key_pts[:,0]
+            key_pts_copy[:,0] = w - key_pts_copy[:,0]
             
             # We need to be aware that when flipping image horizontally, 
             # the key points should be flipped accordingly

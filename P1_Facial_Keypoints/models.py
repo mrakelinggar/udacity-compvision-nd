@@ -27,16 +27,22 @@ class Net(nn.Module):
         ## Note that among the layers to add, consider including:
         # maxpooling layers, multiple conv layers, fully-connected layers, and other layers (such as dropout or batch normalization) to avoid overfitting
         self.pool = nn.MaxPool2d(2, 2)
-        self.dp1 = nn.Dropout(p=0.2)
-        self.dp2 = nn.Dropout(p=0.3)
-        self.dp3 = nn.Dropout(p=0.4)
-        self.dp4 = nn.Dropout(p=0.3)
+        # self.dp1 = nn.Dropout(p=0.2)
+        # self.dp2 = nn.Dropout(p=0.3)
+        # self.dp3 = nn.Dropout(p=0.4)
+        # self.dp4 = nn.Dropout(p=0.3)
+        self.c_bn1 = nn.BatchNorm2d(32)
+        self.c_bn2 = nn.BatchNorm2d(128)
+        self.c_bn3 = nn.BatchNorm2d(256)
+        self.c_bn4 = nn.BatchNorm2d(512)
 
         self.fc1 = nn.Linear(512 * 12 * 12, 2560)
-        self.dp4 = nn.Dropout(p=0.4)
+        # self.dp4 = nn.Dropout(p=0.4)
+        self.fc_bn1 = nn.BatchNorm1d(2560)
 
         self.fc2 = nn.Linear(2560, 1024)
-        self.dp5 = nn.Dropout(p=0.3)
+        # self.dp5 = nn.Dropout(p=0.3)
+        self.fc_bn2 = nn.BatchNorm1d(1024)
 
         self.fc3 = nn.Linear(1024, 136)
 
@@ -44,13 +50,19 @@ class Net(nn.Module):
         ## TODO: Define the feedforward behavior of this model
         ## x is the input image and, as an example, here you may choose to include a pool/conv step:
         ## x = self.pool(F.relu(self.conv1(x)))
-        x = self.dp1(self.pool(F.leaky_relu(self.conv1(x))))
-        x = self.dp2(self.pool(F.leaky_relu(self.conv2(x))))
-        x = self.dp3(self.pool(F.leaky_relu(self.conv3(x))))
-        x = self.dp4(self.pool(F.leaky_relu(self.conv4(x))))
+        # x = self.dp1(self.pool(F.leaky_relu(self.conv1(x))))
+        # x = self.dp2(self.pool(F.leaky_relu(self.conv2(x))))
+        # x = self.dp3(self.pool(F.leaky_relu(self.conv3(x))))
+        # x = self.dp4(self.pool(F.leaky_relu(self.conv4(x))))
+        x = self.c_bn1(self.pool(F.leaky_relu(self.conv1(x))))
+        x = self.c_bn2(self.pool(F.leaky_relu(self.conv2(x))))
+        x = self.c_bn3(self.pool(F.leaky_relu(self.conv3(x))))
+        x = self.c_bn4(self.pool(F.leaky_relu(self.conv4(x))))
         x = x.view(x.size(0), -1)
-        x = self.dp4(F.leaky_relu(self.fc1(x)))
-        x = self.dp5(F.leaky_relu(self.fc2(x)))
+        # x = self.dp4(F.leaky_relu(self.fc1(x)))
+        # x = self.dp5(F.leaky_relu(self.fc2(x)))
+        x = self.fc_bn1(F.leaky_relu(self.fc1(x)))
+        x = self.fc_bn2(F.leaky_relu(self.fc2(x)))
         x = self.fc3(x)
 
         # a modified x, having gone through all the layers of your model, should be returned
