@@ -89,7 +89,6 @@ class RandomHorizontalFlip(object):
             # We need to be aware that when flipping image horizontally, 
             # the key points should be flipped accordingly
             # e.g. key points for right eye when flipped could be marked as left eye
-            # Source: https://github.com/sauravraghuvanshi/Udacity-Computer-Vision-Nanodegree-Program/blob/master/project_1_facial_keypoints/data_load.py
             
             key_pts_copy_2 = np.copy(key_pts_copy)
             
